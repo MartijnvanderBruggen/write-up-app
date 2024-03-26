@@ -13,9 +13,10 @@ dayjs.extend(relativeTime);
 
 const props = defineProps(['writeup']);
 
- 
+
 const form = useForm({
     content: props.writeup.content,
+    images: props.writeup.images
 });
 
 const editing = ref(false);
@@ -62,6 +63,7 @@ const editing = ref(false);
                 </div>
             </form>
             <p v-else class="mt-4 text-lg text-gray-900">{{ writeup.content }}</p>
+            <p v-for="image in form.images" :key="image.id"><img :src="image.image_path"/></p>
         </div>
     </div>
 </template>
