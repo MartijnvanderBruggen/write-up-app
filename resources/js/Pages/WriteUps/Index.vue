@@ -54,6 +54,10 @@ const selectedFile = () => {
                     :writeup="writeup"
                 />
             </div>
+            <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
+                <p>{{ $page.props.message }}</p>
+            </div>
+            
         </div>
     </AuthenticatedLayout>
 </template>

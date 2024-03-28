@@ -16,7 +16,6 @@ class WriteUpController extends Controller
      */
     public function index() : Response
     {
-        //dd(WriteUp::with('user:id,name')->with('images')->latest()->get());
         return Inertia::render('WriteUps/Index',[
             'writeups' => WriteUp::with('user:id,name')->with('images')->latest()->get()
         ]);
@@ -56,20 +55,27 @@ class WriteUpController extends Controller
             foreach ($request->file('files') as $image) {
                 $hashedName = $image->hashName(); 
                 $imagePaths[] = $image->storeAs(
-                    "images/{$user_id}/{$writeup->id}", // Specify the directory structure
+                    "public/images/{$user_id}/{$writeup->id}", // Specify the directory structure
                     $hashedName // Use the original filename
                 );
-                // Create an image record and associate it with the writeup
+                // Create an image record and associate it with the writeup through its images() relationship defined on the model
                 foreach($imagePaths as $imagePath)
                 {
+                    /*replace the public part in the url with storage so laravel can make use of it using 'php artisan storage:link':
+                    The php artisan storage:link command in Laravel creates a symbolic link from the public/storage directory to the
+                    storage/app/public directory. This makes it convenient to access files stored in the storage/app/public directory
+                    from the web server, as they can be served directly through the public directory.When you upload files using Laravel's
+                    file storage system and store them in the storage/app/public directory, they're not directly accessible via the web server. 
+                    By creating a symbolic link using php artisan storage:link, Laravel makes it possible for the web server to serve these
+                    files through the public directory, providing direct access to them.
+                    */
                     $writeup->images()->create([
-                        'image_path' => $imagePath,
+                        'image_path' => str_replace("public", "storage", $imagePath)
                     ]);
                 }
                 
             }
         }
-
         
         return redirect(route('writeups.index'))->with('success', 'Writeup created successfully.');
     }
@@ -101,8 +107,14 @@ class WriteUpController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WriteUp $writeUp)
+    public function destroy($id): Response
     {
-        //
+        $writeUp = WriteUp::where('id', $id)->first();
+        $writeUp->delete();
+
+        // Return a response with the updated list of writeups
+        return Inertia::render('WriteUps/Index', [
+            'writeups' => WriteUp::with('user:id,name')->with('images')->latest()->get()
+        ]);
     }
 }
