@@ -19,6 +19,8 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "dayjs": "^1.11.10"
+        "@tinymce/tinymce-vue": "^4.0.7",
+        "dayjs": "^1.11.10",
+        "vuetify": "^3.5.15"
     }
 }

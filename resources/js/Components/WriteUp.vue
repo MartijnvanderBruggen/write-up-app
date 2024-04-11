@@ -20,6 +20,10 @@ const form = useForm({
 });
 
 const editing = ref(false);
+
+const showImageModal = (event) => {
+    console.log(event);
+}
 </script>
  
 <template>
@@ -62,8 +66,18 @@ const editing = ref(false);
                     <button class="mt-4" @click="editing = false; form.reset(); form.clearErrors()">Cancel</button>
                 </div>
             </form>
-            <p v-else class="mt-4 text-lg text-gray-900">{{ writeup.content }}</p>
-            <p><img v-for="image in form.images" :key="image.id" :src="image.image_path"/></p>
+            <p v-else v-html="writeup.content" class="mt-4 text-lg text-gray-900 writeup-content"></p>
+            <p class="flex w-full justify-normal justify-items-center"><img v-for="image in form.images" :key="image.id" :src="image.image_path" @click="showImageModal" class="flex-1 w-32 border border-b-emerald-400"/></p>
         </div>
     </div>
 </template>
+
+<style scoped>
+.writeup-content {
+    background-color: rgb(27, 29, 29);
+    height:200px;
+    color:rgba(78, 184, 6, 1);
+    padding:15px;
+    border-radius:5px;
+}
+</style>

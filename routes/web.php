@@ -6,6 +6,7 @@ use App\Http\Controllers\WriteUpController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\WriteUp;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +23,15 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+            
     ]);
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $writeups = WriteUp::with('user:id,name')->with('images')->latest()->get();
+    return Inertia::render('Dashboard',[
+        'writeups' => $writeups
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('chirps', ChirpController::class)
