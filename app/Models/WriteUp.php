@@ -26,4 +26,9 @@ class WriteUp extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(WriteUpCategory::class);
+    }
 }

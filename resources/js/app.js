@@ -8,12 +8,16 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.min.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 const vuetify = createVuetify({
     components,
     directives,
+    icons: {
+        iconfont: 'mdi', // default - only for display purposes
+      },
   })
 
 createInertiaApp({
