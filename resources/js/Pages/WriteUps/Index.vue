@@ -13,22 +13,22 @@ import axios from 'axios';
 
 defineProps({'writeups': Array, 'editor': Editor, 'writeUpCategories': Array });
 
-
-const form = useForm({
-    title: '',
-    content: '',
-    files: [],    
-});
-const dropzoneFile = ref("");
-const categoryComboBox = ref(false);
-const newCategoryItem = ref();
-const categories = ref([]);
 const selectedCategory = ref({
   "id": 0,
   "name": "",
   "created_at": "",
   "updated_at": ""
 });
+const form = useForm({
+    title: '',
+    content: '',
+    files: [],     
+});
+const dropzoneFile = ref("");
+const categoryComboBox = ref(false);
+const newCategoryItem = ref();
+const categories = ref([]);
+
 
 
 const drop = (e) => {
@@ -68,8 +68,6 @@ watch(newCategoryItem, async (newVal) => {
         }
     }
 });
-
-
 
 </script>
  
